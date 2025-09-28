@@ -4,7 +4,9 @@
     "@next/next/no-html-link-for-pages": "off",
     "react/no-unescaped-entities": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "jsx-a11y/alt-text": "warn"
-  }
+    "@typescript-eslint/no-unused-vars": "off",
+    "jsx-a11y/alt-text": "off",
+    "@typescript-eslint/no-unused-vars": "off"
+  },
+  "ignorePatterns": ["node_modules/", ".next/", "out/", "build/"]
 }

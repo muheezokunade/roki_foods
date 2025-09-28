@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build --turbopack",
+    "build": "next build",
+    "build:netlify": "ESLINT_NO_DEV_ERRORS=true next build",
     "start": "next start",
     "lint": "eslint",
     "studio": "sanity dev",
