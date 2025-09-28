@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Leaf } from "lucide-react";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -71,7 +71,7 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
             >
-              <a 
+              <Link 
                 href="/learn" 
                 className="inline-block bg-[#0B3D2E] text-white px-6 py-3 md:px-8 rounded-full font-medium hover:bg-[#2E7D32] transition-all duration-300 hover:scale-105 shadow-lg"
                 style={{
@@ -83,7 +83,7 @@ export function Hero() {
                 }}
               >
                 LEARN MORE
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
