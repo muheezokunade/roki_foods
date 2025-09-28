@@ -2,10 +2,10 @@ import { createClient } from 'next-sanity';
 import imageUrlBuilder from '@sanity/image-url';
 
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'yourProjectId',
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'demo',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'demo',
   apiVersion: '2024-01-01',
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: false,
 });
 
 const builder = imageUrlBuilder(client);
@@ -16,34 +16,53 @@ export function urlFor(source: any) {
 
 // Content fetching functions
 export async function getSiteSettings() {
-  return await client.fetch(`
-    *[_type == "siteSettings"][0] {
-      title,
-      description,
-      heroTitle,
-      heroSubtitle,
-      heroImage,
-      heroCtaPrimary,
-      heroCtaSecondary,
-      promoBarText,
-      promoBarCta
-    }
-  `);
+  try {
+    return await client.fetch(`
+      *[_type == "siteSettings"][0] {
+        title,
+        description,
+        heroTitle,
+        heroSubtitle,
+        heroImage,
+        heroCtaPrimary,
+        heroCtaSecondary,
+        promoBarText,
+        promoBarCta
+      }
+    `);
+  } catch (error) {
+    console.warn('Sanity not available, using fallback data');
+    return {
+      title: 'Roki Foods',
+      description: 'Sustainable palm oil with zero-waste circularity',
+      heroTitle: 'Sustainability Grows Here',
+      heroSubtitle: 'Pure palm oil, responsibly crafted',
+      heroCtaPrimary: 'Learn More',
+      heroCtaSecondary: 'Our Story',
+      promoBarText: 'Limited time: seasonal harvest — 20% off select products',
+      promoBarCta: 'Learn more'
+    };
+  }
 }
 
 export async function getFeaturedProducts() {
-  return await client.fetch(`
-    *[_type == "product" && featured == true] | order(_createdAt desc) [0...6] {
-      _id,
-      title,
-      slug,
-      price,
-      image,
-      category->{title, slug},
-      description,
-      featured
-    }
-  `);
+  try {
+    return await client.fetch(`
+      *[_type == "product" && featured == true] | order(_createdAt desc) [0...6] {
+        _id,
+        title,
+        slug,
+        price,
+        image,
+        category->{title, slug},
+        description,
+        featured
+      }
+    `);
+  } catch (error) {
+    console.warn('Sanity not available, using fallback data');
+    return [];
+  }
 }
 
 export async function getProducts() {
@@ -91,38 +110,48 @@ export async function getCategories() {
 }
 
 export async function getPosts() {
-  return await client.fetch(`
-    *[_type == "post"] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      excerpt,
-      author,
-      publishedAt,
-      image,
-      category,
-      tags,
-      featured
-    }
-  `);
+  try {
+    return await client.fetch(`
+      *[_type == "post"] | order(publishedAt desc) {
+        _id,
+        title,
+        slug,
+        excerpt,
+        author,
+        publishedAt,
+        image,
+        category,
+        tags,
+        featured
+      }
+    `);
+  } catch (error) {
+    console.warn('Sanity not available, using fallback data');
+    return [];
+  }
 }
 
 export async function getPost(slug: string) {
-  return await client.fetch(`
-    *[_type == "post" && slug.current == $slug][0] {
-      _id,
-      title,
-      slug,
-      excerpt,
-      author,
-      publishedAt,
-      image,
-      category,
-      tags,
-      body,
-      seo
-    }
-  `, { slug });
+  try {
+    return await client.fetch(`
+      *[_type == "post" && slug.current == $slug][0] {
+        _id,
+        title,
+        slug,
+        excerpt,
+        author,
+        publishedAt,
+        image,
+        category,
+        tags,
+        body,
+        seo
+      }
+    `, { slug });
+  } catch (error) {
+    console.warn('Sanity not available, using fallback data');
+    return null;
+  }
 }
 
 export async function getRecipes() {
